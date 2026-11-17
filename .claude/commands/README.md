@@ -1,5 +1,3 @@
-# Slash commands
+# Closing jobs
 
-One file per recurring job. Each command tells Claude Code exactly which CLI command to run and how to present the result, so the operator never re-explains the job.
-
-Add a command every time the same ask comes twice. Frontmatter needs a `description:` line. The body is the brief.
+Read CLAUDE.md. The recipes in this directory all use scripts/closing.mjs, with docs and view as read-only renderers. There is no second workflow library. Start with weekly-review, then the named record or action.

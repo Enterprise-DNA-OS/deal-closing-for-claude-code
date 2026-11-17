@@ -1,11 +1,57 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "closing-checklist",
+    "title": "Closing checklist",
+    "for_each": "select id,code from deals order by code",
+    "file": "code",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Transaction",
+        "layout": "record",
+        "sql": "select code,title,owner,closing_on,jurisdiction,status from deals where id=$1"
+      },
+      {
+        "title": "Conditions and deliverables",
+        "sql": "select code,title,owner,due_on,status,revision,completion_evidence from items where deal_id=$1 and kind<>'postclosing' order by code"
+      },
+      {
+        "title": "Unresolved dependencies",
+        "sql": "select i.code item,r.code requires,r.status from dependencies dep join items i on i.id=dep.item_id join items r on r.id=dep.requires_id where i.deal_id=$1 and r.status<>'complete' order by i.code"
+      }
+    ]
+  },
+  {
+    "name": "signature-matrix",
+    "title": "Signature evidence matrix",
+    "for_each": "select id,code from deals order by code",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Current revision",
+        "note": "Recorded evidence is a human attestation, not electronic signature verification.",
+        "sql": "select s.code,s.signer,s.revision,s.signature_status,s.signed_on,s.evidence from signature_status s join items i on i.id=s.item_id where i.deal_id=$1 order by s.code,s.signer"
+      }
+    ]
+  },
+  {
+    "name": "closing-book-index",
+    "title": "Closing book index",
+    "for_each": "select id,code from deals order by code",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Readiness",
+        "note": "An index of references, not a merged or executed document bundle. Open items remain visible.",
+        "sql": "select code,title,status,blockers,postclosing_open from closing_readiness where id=$1"
+      },
+      {
+        "title": "Document register",
+        "sql": "select i.code,i.title,i.status,doc.revision,doc.reference,doc.sha256 from items i join documents doc on doc.item_id=i.id where i.deal_id=$1 order by i.code,doc.revision"
+      },
+      {
+        "title": "Post-closing obligations",
+        "sql": "select code,title,owner,due_on,status from items where deal_id=$1 and kind='postclosing' order by due_on"
+      }
     ]
   }
 ]

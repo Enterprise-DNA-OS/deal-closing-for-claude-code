@@ -1,43 +1,60 @@
-# Deal Closing for Claude Code: operating instructions
+# Deal Closing for Claude Code
 
-This file is the brain. Claude Code reads it at the start of every session. It says who this is for, how work gets done, and the one right way to do each recurring job.
+For a corporate legal team managing conditions precedent, document versions, signature evidence and post-closing obligations. The fictional demo is Kauri Transaction Team. On customisation, record the operator's business name, responsible lawyer, jurisdiction and review cadence here.
 
-## Who this is for
+## Work from records
 
-- **Business:** [YOUR BUSINESS]
-- **Operator:** [YOUR NAME], [your role]
-- **What matters most:** [the one or two outcomes you care about]
+Run npm run closing -- help. Every CLI command accepts --json. Read before writing. Use exact codes, case-insensitive names or partial IDs. Ambiguous matches list candidates and exit with failure. Every database write requires --actor. The actor is operator supplied, not an authenticated identity.
 
-Fill this in once. A worker with context knows. A worker without it guesses.
+Never send, publish, delete, file a document or move client money. Never create a completion, signature or closing decision without human-supplied evidence. Drafts remain in drafts/. A recorded signature is not an electronic signature service or a legal validity decision. Original documents remain in the firm's controlled storage.
 
-## How to work
+## One route per job
 
-1. **Take a brief, not a script.** The operator describes the outcome. You run the right command and present the answer.
-2. **Read before you write.** Before drafting anything about a record, read its full history first.
-3. **Plain language.** Short sentences. No filler. Numbers in tables.
-4. **Silent success, loud problems.** No play-by-play. Say what broke and what you did about it.
-5. **Stop at the line.** Anything that sends, deletes, or faces a customer waits for a yes in this session.
-
-## Routing table: one right way for each recurring job
-
-| When the operator asks for... | Use this |
+| Ask | Recipe |
 |---|---|
-| <!-- TODO(author): one row per slash command --> | `/...` |
+| activity | /activity |
+| add | /add |
+| add-deal | /add-deal |
+| attention | /attention |
+| checklist | /checklist |
+| close-deal | /close-deal |
+| closing-readiness | /closing-readiness |
+| complete | /complete |
+| compliance | /compliance |
+| customise | /customise |
+| deals | /deals |
+| depend | /depend |
+| dependency-blockers | /dependency-blockers |
+| docs | /docs |
+| draft-chaser | /draft-chaser |
+| draft-closing | /draft-closing |
+| export | /export |
+| help | /help |
+| import | /import |
+| log | /log |
+| new-view | /new-view |
+| owner-load | /owner-load |
+| post-closing | /post-closing |
+| record-signature | /record-signature |
+| reopen | /reopen |
+| require-signature | /require-signature |
+| review-privacy | /review-privacy |
+| show | /show |
+| signatures-due | /signatures-due |
+| stale-evidence | /stale-evidence |
+| update | /update |
+| version | /version |
+| view | /view |
+| weekly-review | /weekly-review |
 
-If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) and then propose a new command for it.
+Monday's review combines closing-readiness, attention and signatures-due, followed by post-closing. New versions invalidate prior signature evidence. Changed conditions reopen dependent work. A deal cannot close with blockers; post-closing work remains tracked after completion. Never disguise an unresolved item with a fake completion.
 
-## Hard rules
+## Files and operation
 
-- Never send email or messages from here. Draft to `drafts/`, a person sends.
-- Never delete records without an explicit yes in this session. Prefer marking closed or archived.
-- Never invent a record. If a name is ambiguous, list the candidates and ask.
-- The database is the source of truth. If the answer is not in it, say so.
+scripts/closing.mjs is the one CLI. scripts/lib/db.mjs selects local PGlite or DATABASE_URL for PostgreSQL. Migrations live in supabase/migrations. brand.json controls the document brand; documents.json and views.json define read-only output. Use the same instructions in Claude Code, Codex, OpenCode and Cursor through AGENTS.md.
 
-## Where things live
+Shared use needs configured trusted database access, backups, encrypted storage and firm-specific matter permissions. RLS is enabled with no public policies. This base is not a multi-tenant client portal. Never seed a shared production database. TEST_DATABASE_URL must point to an empty disposable PostgreSQL database.
 
-- `scripts/` the CLI. `scripts/lib/db.mjs` picks `DATABASE_URL` (Postgres, Supabase) or the embedded database in `.data/`.
-- `supabase/migrations/` the schema, plain SQL. `npm run migrate` applies it.
-- `.claude/commands/` the slash commands. Add one every time the same ask comes twice.
-- `docs/` the thesis and the guide for moving off Legatics.
+Use /customise for schema and rule changes, /new-view for reports. Run npm test after changes. Keep generated evidence and exports private. Database administrators can alter history; do not call it tamper-proof. Read docs/compliance.md for rule scope and sources.
 
-Built by Enterprise DNA. Installed and run for you as part of Omni: https://enterprisedna.co/omni/instead-of/legatics
+Omni by Enterprise DNA installs, customises and runs this system for one setup fee, then a retainer. https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=legatics

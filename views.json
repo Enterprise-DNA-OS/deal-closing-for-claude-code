@@ -1,13 +1,39 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Deal Closing for Claude Code: what needs attention, rendered by npm run view",
+    "title": "The closing week",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Deal readiness",
+        "sql": "select code,title,owner,closing_on,status,closing_items,blockers,postclosing_open from closing_readiness order by closing_on"
+      },
+      {
+        "title": "Attention",
+        "sql": "select * from attention order by due_on nulls last,deal,code"
+      }
+    ]
+  },
+  {
+    "name": "signatures",
+    "title": "Signature evidence",
+    "sections": [
+      {
+        "title": "Current document signatures",
+        "sql": "select deal,code,signer,revision,signature_status,signed_on,evidence from signature_status order by deal,code,signer"
+      }
+    ]
+  },
+  {
+    "name": "after-closing",
+    "title": "After completion",
+    "sections": [
+      {
+        "title": "Outstanding obligations",
+        "sql": "select deal,code,title,owner,due_on from item_readiness where kind='postclosing' and status='open' order by due_on"
+      },
+      {
+        "title": "Privacy review reminders",
+        "sql": "select * from compliance_findings order by deal,rule"
       }
     ]
   }
