@@ -6,7 +6,7 @@ See what stops a corporate transaction from closing, which signatures belong to 
 |---|---|---|
 | Free under MIT. Install the base and review the demo. | Your fields, conditions, Legatics exports, signing connections and paperwork. One setup fee, then a retainer. | Installed and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
 
-[Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=legatics) · [Instead of Legatics](https://enterprisedna.co/omni/instead-of/legatics)
+[Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=legatics) · [Instead of Legatics](https://enterprisedna.co/omni/instead-of/legatics?utm_source=github&utm_medium=readme&utm_campaign=legatics)
 
 ## Start with real output
 
